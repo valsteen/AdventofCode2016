@@ -12,7 +12,7 @@ class Advent3(object):
                 remaining_indexes.remove(selected_index)
 
             sum_of_indexes = sum(lens[index] for index in indexes_to_sum)
-            #print [lens[index] for index in indexes_to_sum], sum_of_indexes, remaining_indexes
+            # print [lens[index] for index in indexes_to_sum], sum_of_indexes, remaining_indexes
             if sum_of_indexes <= lens[remaining_indexes[0]]:
                 return
         self.count += 1
@@ -25,7 +25,6 @@ a = Advent3()
 a.validate((2, 2, 2))
 a.validate((5, 10, 25))
 print a.count
-
 
 i = """  810  679   10
   783  255  616
@@ -1628,7 +1627,31 @@ i = """  810  679   10
   919  923  873"""
 
 a = Advent3()
-
 for line in i.split("\n"):
     a.validate([int(n) for n in re.findall("[0-9]+", line)])
 print a.count
+
+
+def parse_and_count(content):
+    a = Advent3()
+    linecounter = 0
+    triangles = [[],[], []]
+    for line in content.split("\n"):
+        linecounter += 1
+        for index, number in enumerate([int(n) for n in re.findall("[0-9]+", line)]):
+            triangles[index].append(number)
+        if linecounter % 3 == 0:
+            for triangle in triangles:
+                a.validate(triangle)
+                triangles = [[], [], []]
+    print a.count
+
+
+parse_and_count("""101 301 501
+102 302 502
+103 303 503
+201 401 601
+202 402 602
+203 403 603""")
+
+parse_and_count(i)
