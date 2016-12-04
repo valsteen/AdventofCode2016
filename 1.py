@@ -31,19 +31,29 @@ class Advent1(object):
         else:
             raise Exception("EPIC FAIL")
 
+    def distance(self, x , y):
+        return abs(x) + abs(y)
+
     def __init__(self, i):
+        self.visited = set()
         parts = re.split(r"[, ]+", i)
         for part in parts:
             d = part[0]
             l = int(part[1:])
 
             self.turn(d)
-            self.forward(l)
 
-        print abs(self.x) + abs(self.y)
+            for m in xrange(l):
+                self.forward(1)
+                if (self.x, self.y) in self.visited:
+                    print "Been there", self.distance(self.x, self.y)
+                self.visited.add((self.x,self.y))
+
+        print "Finish as of", self.distance(self.x, self.y)
 
 
 Advent1("R2, L3")
 Advent1("R2, R2, R2")
 Advent1("R5, L5, R5, R3")
+Advent1("R8, R4, R4, R8")
 Advent1("L5, R1, L5, L1, R5, R1, R1, L4, L1, L3, R2, R4, L4, L1, L1, R2, R4, R3, L1, R4, L4, L5, L4, R4, L5, R1, R5, L2, R1, R3, L2, L4, L4, R1, L192, R5, R1, R4, L5, L4, R5, L1, L1, R48, R5, R5, L2, R4, R4, R1, R3, L1, L4, L5, R1, L4, L2, L5, R5, L2, R74, R4, L1, R188, R5, L4, L2, R5, R2, L4, R4, R3, R3, R2, R1, L3, L2, L5, L5, L2, L1, R1, R5, R4, L3, R5, L1, L3, R4, L1, L3, L2, R1, R3, R2, R5, L3, L1, L1, R5, L4, L5, R5, R2, L5, R2, L1, L5, L3, L5, L5, L1, R1, L4, L3, L1, R2, R5, L1, L3, R4, R5, L4, L1, R5, L1, R5, R5, R5, R2, R1, R2, L5, L5, L5, R4, L5, L4, L4, R5, L2, R1, R5, L1, L5, R4, L3, R4, L2, R3, R3, R3, L2, L2, L2, L1, L4, R3, L4, L2, R2, R5, L1, R2")
