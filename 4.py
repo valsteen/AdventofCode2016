@@ -4,7 +4,8 @@ import re
 
 def checkroom(room):
     match = re.match(r"^(?P<letters>[a-z-]+)(?P<sector>[0-9]+)\[(?P<checksum>[a-z-]+)\]$", room)
-    letters = sorted(match.group('letters').replace("-", ""))
+    phrase = match.group('letters')
+    letters = sorted(phrase.replace("-", ""))
     checksum = match.group('checksum')
     sector = int(match.group('sector'))
 
@@ -13,13 +14,13 @@ def checkroom(room):
     actual_checksum = "".join([c[0] for c in counts])[:5]
 
     if checksum == actual_checksum:
-        return sector
+        return [phrase + str(sector), sector]
     else:
-        return 0
+        return [phrase + str(sector), 0]
 
 
 def parse_input(i):
-    print sum(checkroom(line) for line in i.split("\n"))
+    print sum(checkroom(line)[1] for line in i.split("\n"))
 
 
 parse_input("""aaaaa-bbb-z-y-x-123[abxyz]
@@ -27,7 +28,7 @@ a-b-c-d-e-f-g-h-987[abcde]
 not-a-real-room-404[oarel]
 totally-real-room-200[decoy]""")
 
-parse_input("""vxupkizork-sgmtkzoi-pkrrehkgt-zxgototm-644[kotgr]
+puzzle_input = """vxupkizork-sgmtkzoi-pkrrehkgt-zxgototm-644[kotgr]
 mbiyqoxsm-pvygob-nocsqx-900[obmqs]
 veqtekmrk-ikk-hitpscqirx-334[nrtws]
 gvcskirmg-fyrrc-irkmriivmrk-932[rikmc]
@@ -961,4 +962,34 @@ kpvgtpcvkqpcn-fag-ugtxkegu-986[qpyuj]
 dfcxsqhwzs-qzoggwtwsr-qvcqczohs-fsoqeiwgwhwcb-714[lgtfc]
 ojk-nzxmzo-xviyt-xjvodib-omvdidib-265[iodvx]
 wbhsfbohwcboz-qobrm-zcuwghwqg-298[bwhoc]
-shoewudys-tou-ixyffydw-478[uszty]""")
+shoewudys-tou-ixyffydw-478[uszty]"""
+
+parse_input(puzzle_input)
+
+
+def caesar_decrypt(s):
+    def move_by(c, n):
+        if not re.match("[a-z]", c):
+            return c
+        c = ord(c) - ord("a")
+        c += n
+        c %= 26
+        return chr(c + ord("a"))
+
+    match = re.match(r"^(?P<letters>[a-z-]+)(?P<sector>[0-9]+)$", s)
+    letters = match.group('letters').replace("-", " ")
+    sector = int(match.group("sector"))
+    return "".join([move_by(c, sector) for c in letters])
+
+
+print caesar_decrypt("qzmt-zixmtkozy-ivhz-343")
+
+
+def decrypt_input(i):
+    for line in i.split("\n"):
+        phrase, sector = checkroom(line)
+        if sum:
+            print caesar_decrypt(phrase), sector
+
+
+decrypt_input(puzzle_input)
