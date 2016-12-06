@@ -10,7 +10,7 @@ def advent6(input):
         for position, character in enumerate(line):
             counters[position][character] += 1
 
-    return "".join(counter.most_common()[0][0] for counter in counters)
+    return "".join(counter.most_common()[-1][0] for counter in counters)
 
 
 
