@@ -4,10 +4,21 @@ import re
 def advent7(s):
     return re.search(r'(.)((?!\1).)\2\1', s) and not re.search(r'\[[^\]]*?([^\]])((?!\1)[^\]])\2\1[^\]]*?\]', s)
 
+
+def advent7part2(s):
+    return (re.search(r'(.)((?!\1).)\1.*?\[[^\[\]]*?\2\1\2[^\[\]]*\]', s) and not re.search(r'\[[^\[\]]*?(.)((?!\1).)\1[^\[\]]*\].*?\[[^\[\]]*?\2\1\2[^\[\]]*\]', s)) or \
+           (re.search(r'\[[^\[\]]*?(.)((?!\1).)\1[^\[\]]*\].*?\2\1\2', s) and not re.search(r'\[[^\[\]]*?(.)((?!\1).)\1[^\[\]]*\].*?\[[^\[\]]*?\2\1\2[^\[\]]*\]', s))
+
+
 print advent7('abba[mnop]qrst')
 print advent7('abcd[bddb]xyyx')
 print advent7('aaaa[qwer]tyui')
 print advent7('ioxxoj[asdfgh]zxcvbn')
+
+print advent7part2("aba[bab]xyz")
+print advent7part2("xyx[xyx]xyx")
+print advent7part2("aaa[kek]eke")
+print advent7part2("zazbz[bzb]cdb")
 
 input = """wysextplwqpvipxdv[srzvtwbfzqtspxnethm]syqbzgtboxxzpwr[kljvjjkjyojzrstfgrw]obdhcczonzvbfby[svotajtpttohxsh]cooktbyumlpxostt
 emzopymywhhxulxuctj[dwwvkzhoigmbmnf]nxgbgfwqvrypqxppyq[qozsihnhpztcrpbdc]rnhnakmrdcowatw[rhvchmzmyfxlolwe]uysecbspabtauvmixa
@@ -2011,3 +2022,4 @@ dkodbaotlfdaphwzbcc[ldzeemqiovyqjgs]qxibabdusgaistkru[usglloxgycyynmp]aaocvclsoc
 bwzsacxgqkbjycgfw[dbnligvrmqscasutn]rbgybqqsgjvlonkut"""
 
 print len([line for line in input.split("\n") if advent7(line)])
+print len([line for line in input.split("\n") if advent7part2(line)])
